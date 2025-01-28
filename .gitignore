@@ -1,0 +1,9 @@
+data/knowledge_store/
+__pycache__/
+utils/__pycache__/
+source_cred/__pycache__/
+secrets/
+papers/
+.DS_Store
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/

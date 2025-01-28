@@ -1,0 +1,782 @@
+{
+  "https://www.politifact.com/abortion/": {
+    "True": {
+      "percentage": 11,
+      "checks": 64
+    },
+    "Mostly True": {
+      "percentage": 14,
+      "checks": 77
+    },
+    "Half True": {
+      "percentage": 18,
+      "checks": 99
+    },
+    "Mostly False": {
+      "percentage": 19,
+      "checks": 106
+    },
+    "False": {
+      "percentage": 29,
+      "checks": 157
+    },
+    "Pants on Fire": {
+      "percentage": 6,
+      "checks": 37
+    }
+  },
+  "https://www.politifact.com/animals/": {
+    "True": {
+      "percentage": 9,
+      "checks": 13
+    },
+    "Mostly True": {
+      "percentage": 11,
+      "checks": 16
+    },
+    "Half True": {
+      "percentage": 16,
+      "checks": 22
+    },
+    "Mostly False": {
+      "percentage": 10,
+      "checks": 14
+    },
+    "False": {
+      "percentage": 32,
+      "checks": 43
+    },
+    "Pants on Fire": {
+      "percentage": 19,
+      "checks": 26
+    }
+  },
+  "https://www.politifact.com/border-security/": {
+    "True": {
+      "percentage": 6,
+      "checks": 7
+    },
+    "Mostly True": {
+      "percentage": 9,
+      "checks": 10
+    },
+    "Half True": {
+      "percentage": 14,
+      "checks": 15
+    },
+    "Mostly False": {
+      "percentage": 20,
+      "checks": 21
+    },
+    "False": {
+      "percentage": 40,
+      "checks": 41
+    },
+    "Pants on Fire": {
+      "percentage": 7,
+      "checks": 8
+    }
+  },
+  "https://www.politifact.com/climate-change/": {
+    "True": {
+      "percentage": 8,
+      "checks": 33
+    },
+    "Mostly True": {
+      "percentage": 13,
+      "checks": 54
+    },
+    "Half True": {
+      "percentage": 12,
+      "checks": 50
+    },
+    "Mostly False": {
+      "percentage": 15,
+      "checks": 59
+    },
+    "False": {
+      "percentage": 40,
+      "checks": 155
+    },
+    "Pants on Fire": {
+      "percentage": 9,
+      "checks": 36
+    }
+  },
+  "https://www.politifact.com/coronavirus/": {
+    "True": {
+      "percentage": 3,
+      "checks": 54
+    },
+    "Mostly True": {
+      "percentage": 5,
+      "checks": 84
+    },
+    "Half True": {
+      "percentage": 7,
+      "checks": 114
+    },
+    "Mostly False": {
+      "percentage": 13,
+      "checks": 207
+    },
+    "False": {
+      "percentage": 55,
+      "checks": 869
+    },
+    "Pants on Fire": {
+      "percentage": 14,
+      "checks": 234
+    }
+  },
+  "https://www.politifact.com/crime/": {
+    "True": {
+      "percentage": 10,
+      "checks": 118
+    },
+    "Mostly True": {
+      "percentage": 15,
+      "checks": 178
+    },
+    "Half True": {
+      "percentage": 16,
+      "checks": 195
+    },
+    "Mostly False": {
+      "percentage": 15,
+      "checks": 183
+    },
+    "False": {
+      "percentage": 28,
+      "checks": 335
+    },
+    "Pants on Fire": {
+      "percentage": 12,
+      "checks": 148
+    }
+  },
+  "https://www.politifact.com/corporations/": {
+    "True": {
+      "percentage": 9,
+      "checks": 23
+    },
+    "Mostly True": {
+      "percentage": 21,
+      "checks": 53
+    },
+    "Half True": {
+      "percentage": 24,
+      "checks": 60
+    },
+    "Mostly False": {
+      "percentage": 15,
+      "checks": 39
+    },
+    "False": {
+      "percentage": 22,
+      "checks": 56
+    },
+    "Pants on Fire": {
+      "percentage": 6,
+      "checks": 17
+    }
+  },
+  "https://www.politifact.com/children/": {
+    "True": {
+      "percentage": 12,
+      "checks": 56
+    },
+    "Mostly True": {
+      "percentage": 18,
+      "checks": 87
+    },
+    "Half True": {
+      "percentage": 17,
+      "checks": 81
+    },
+    "Mostly False": {
+      "percentage": 15,
+      "checks": 74
+    },
+    "False": {
+      "percentage": 28,
+      "checks": 130
+    },
+    "Pants on Fire": {
+      "percentage": 7,
+      "checks": 36
+    }
+  },
+  "https://www.politifact.com/drugs/": {
+    "True": {
+      "percentage": 21,
+      "checks": 59
+    },
+    "Mostly True": {
+      "percentage": 18,
+      "checks": 52
+    },
+    "Half True": {
+      "percentage": 14,
+      "checks": 41
+    },
+    "Mostly False": {
+      "percentage": 13,
+      "checks": 38
+    },
+    "False": {
+      "percentage": 25,
+      "checks": 70
+    },
+    "Pants on Fire": {
+      "percentage": 5,
+      "checks": 15
+    }
+  },
+  "https://www.politifact.com/economy/": {
+    "True": {
+      "percentage": 15,
+      "checks": 303
+    },
+    "Mostly True": {
+      "percentage": 21,
+      "checks": 422
+    },
+    "Half True": {
+      "percentage": 23,
+      "checks": 461
+    },
+    "Mostly False": {
+      "percentage": 16,
+      "checks": 312
+    },
+    "False": {
+      "percentage": 18,
+      "checks": 354
+    },
+    "Pants on Fire": {
+      "percentage": 4,
+      "checks": 88
+    }
+  },
+  "https://www.politifact.com/education/": {
+    "True": {
+      "percentage": 14,
+      "checks": 191
+    },
+    "Mostly True": {
+      "percentage": 20,
+      "checks": 281
+    },
+    "Half True": {
+      "percentage": 22,
+      "checks": 300
+    },
+    "Mostly False": {
+      "percentage": 19,
+      "checks": 261
+    },
+    "False": {
+      "percentage": 18,
+      "checks": 253
+    },
+    "Pants on Fire": {
+      "percentage": 5,
+      "checks": 69
+    }
+  },
+  "https://www.politifact.com/energy/": {
+    "True": {
+      "percentage": 11,
+      "checks": 78
+    },
+    "Mostly True": {
+      "percentage": 16,
+      "checks": 111
+    },
+    "Half True": {
+      "percentage": 20,
+      "checks": 141
+    },
+    "Mostly False": {
+      "percentage": 19,
+      "checks": 133
+    },
+    "False": {
+      "percentage": 25,
+      "checks": 174
+    },
+    "Pants on Fire": {
+      "percentage": 6,
+      "checks": 45
+    }
+  },
+  "https://www.politifact.com/environment/": {
+    "True": {
+      "percentage": 10,
+      "checks": 73
+    },
+    "Mostly True": {
+      "percentage": 16,
+      "checks": 111
+    },
+    "Half True": {
+      "percentage": 18,
+      "checks": 125
+    },
+    "Mostly False": {
+      "percentage": 15,
+      "checks": 107
+    },
+    "False": {
+      "percentage": 28,
+      "checks": 190
+    },
+    "Pants on Fire": {
+      "percentage": 10,
+      "checks": 69
+    }
+  },
+  "https://www.politifact.com/ethics/": {
+    "True": {
+      "percentage": 14,
+      "checks": 39
+    },
+    "Mostly True": {
+      "percentage": 14,
+      "checks": 39
+    },
+    "Half True": {
+      "percentage": 22,
+      "checks": 61
+    },
+    "Mostly False": {
+      "percentage": 16,
+      "checks": 47
+    },
+    "False": {
+      "percentage": 23,
+      "checks": 65
+    },
+    "Pants on Fire": {
+      "percentage": 9,
+      "checks": 26
+    }
+  },
+  "https://www.politifact.com/food/": {
+    "True": {
+      "percentage": 7,
+      "checks": 10
+    },
+    "Mostly True": {
+      "percentage": 9,
+      "checks": 13
+    },
+    "Half True": {
+      "percentage": 7,
+      "checks": 11
+    },
+    "Mostly False": {
+      "percentage": 13,
+      "checks": 19
+    },
+    "False": {
+      "percentage": 43,
+      "checks": 61
+    },
+    "Pants on Fire": {
+      "percentage": 17,
+      "checks": 25
+    }
+  },
+  "https://www.politifact.com/guns/": {
+    "True": {
+      "percentage": 11,
+      "checks": 92
+    },
+    "Mostly True": {
+      "percentage": 19,
+      "checks": 152
+    },
+    "Half True": {
+      "percentage": 17,
+      "checks": 138
+    },
+    "Mostly False": {
+      "percentage": 14,
+      "checks": 116
+    },
+    "False": {
+      "percentage": 26,
+      "checks": 204
+    },
+    "Pants on Fire": {
+      "percentage": 10,
+      "checks": 79
+    }
+  },
+  "https://www.politifact.com/health-care/": {
+    "True": {
+      "percentage": 10,
+      "checks": 221
+    },
+    "Mostly True": {
+      "percentage": 15,
+      "checks": 332
+    },
+    "Half True": {
+      "percentage": 19,
+      "checks": 408
+    },
+    "Mostly False": {
+      "percentage": 20,
+      "checks": 431
+    },
+    "False": {
+      "percentage": 24,
+      "checks": 517
+    },
+    "Pants on Fire": {
+      "percentage": 9,
+      "checks": 196
+    }
+  },
+  "https://www.politifact.com/housing/": {
+    "True": {
+      "percentage": 19,
+      "checks": 34
+    },
+    "Mostly True": {
+      "percentage": 19,
+      "checks": 34
+    },
+    "Half True": {
+      "percentage": 22,
+      "checks": 40
+    },
+    "Mostly False": {
+      "percentage": 13,
+      "checks": 24
+    },
+    "False": {
+      "percentage": 18,
+      "checks": 32
+    },
+    "Pants on Fire": {
+      "percentage": 6,
+      "checks": 12
+    }
+  },
+  "https://www.politifact.com/human-rights/": {
+    "True": {
+      "percentage": 10,
+      "checks": 9
+    },
+    "Mostly True": {
+      "percentage": 17,
+      "checks": 16
+    },
+    "Half True": {
+      "percentage": 13,
+      "checks": 12
+    },
+    "Mostly False": {
+      "percentage": 17,
+      "checks": 16
+    },
+    "False": {
+      "percentage": 33,
+      "checks": 30
+    },
+    "Pants on Fire": {
+      "percentage": 6,
+      "checks": 6
+    }
+  },
+  "https://www.politifact.com/history/": {
+    "True": {
+      "percentage": 13,
+      "checks": 102
+    },
+    "Mostly True": {
+      "percentage": 14,
+      "checks": 109
+    },
+    "Half True": {
+      "percentage": 14,
+      "checks": 109
+    },
+    "Mostly False": {
+      "percentage": 12,
+      "checks": 96
+    },
+    "False": {
+      "percentage": 31,
+      "checks": 232
+    },
+    "Pants on Fire": {
+      "percentage": 13,
+      "checks": 99
+    }
+  },
+  "https://www.politifact.com/military/": {
+    "True": {
+      "percentage": 14,
+      "checks": 93
+    },
+    "Mostly True": {
+      "percentage": 13,
+      "checks": 89
+    },
+    "Half True": {
+      "percentage": 15,
+      "checks": 101
+    },
+    "Mostly False": {
+      "percentage": 14,
+      "checks": 96
+    },
+    "False": {
+      "percentage": 28,
+      "checks": 183
+    },
+    "Pants on Fire": {
+      "percentage": 12,
+      "checks": 80
+    }
+  },
+  "https://www.politifact.com/natural-disasters/": {
+    "True": {
+      "percentage": 3,
+      "checks": 3
+    },
+    "Mostly True": {
+      "percentage": 7,
+      "checks": 7
+    },
+    "Half True": {
+      "percentage": 7,
+      "checks": 7
+    },
+    "Mostly False": {
+      "percentage": 12,
+      "checks": 12
+    },
+    "False": {
+      "percentage": 56,
+      "checks": 53
+    },
+    "Pants on Fire": {
+      "percentage": 11,
+      "checks": 11
+    }
+  },
+  "https://www.politifact.com/welfare/": {
+    "True": {
+      "percentage": 8,
+      "checks": 8
+    },
+    "Mostly True": {
+      "percentage": 28,
+      "checks": 27
+    },
+    "Half True": {
+      "percentage": 20,
+      "checks": 19
+    },
+    "Mostly False": {
+      "percentage": 14,
+      "checks": 14
+    },
+    "False": {
+      "percentage": 18,
+      "checks": 17
+    },
+    "Pants on Fire": {
+      "percentage": 9,
+      "checks": 9
+    }
+  },
+  "https://www.politifact.com/weather/": {
+    "True": {
+      "percentage": 7,
+      "checks": 11
+    },
+    "Mostly True": {
+      "percentage": 9,
+      "checks": 14
+    },
+    "Half True": {
+      "percentage": 6,
+      "checks": 9
+    },
+    "Mostly False": {
+      "percentage": 9,
+      "checks": 13
+    },
+    "False": {
+      "percentage": 47,
+      "checks": 68
+    },
+    "Pants on Fire": {
+      "percentage": 19,
+      "checks": 28
+    }
+  },
+  "https://www.politifact.com/taxes/": {
+    "True": {
+      "percentage": 11,
+      "checks": 198
+    },
+    "Mostly True": {
+      "percentage": 19,
+      "checks": 330
+    },
+    "Half True": {
+      "percentage": 21,
+      "checks": 369
+    },
+    "Mostly False": {
+      "percentage": 20,
+      "checks": 343
+    },
+    "False": {
+      "percentage": 19,
+      "checks": 335
+    },
+    "Pants on Fire": {
+      "percentage": 6,
+      "checks": 105
+    }
+  },
+  "https://www.politifact.com/technology/": {
+    "True": {
+      "percentage": 7,
+      "checks": 19
+    },
+    "Mostly True": {
+      "percentage": 12,
+      "checks": 32
+    },
+    "Half True": {
+      "percentage": 13,
+      "checks": 35
+    },
+    "Mostly False": {
+      "percentage": 14,
+      "checks": 37
+    },
+    "False": {
+      "percentage": 40,
+      "checks": 103
+    },
+    "Pants on Fire": {
+      "percentage": 11,
+      "checks": 28
+    }
+  },
+  "https://www.politifact.com/sports/": {
+    "True": {
+      "percentage": 7,
+      "checks": 22
+    },
+    "Mostly True": {
+      "percentage": 10,
+      "checks": 31
+    },
+    "Half True": {
+      "percentage": 10,
+      "checks": 29
+    },
+    "Mostly False": {
+      "percentage": 10,
+      "checks": 31
+    },
+    "False": {
+      "percentage": 45,
+      "checks": 130
+    },
+    "Pants on Fire": {
+      "percentage": 15,
+      "checks": 44
+    }
+  },
+  "https://www.politifact.com/science/": {
+    "True": {
+      "percentage": 7,
+      "checks": 17
+    },
+    "Mostly True": {
+      "percentage": 11,
+      "checks": 25
+    },
+    "Half True": {
+      "percentage": 10,
+      "checks": 23
+    },
+    "Mostly False": {
+      "percentage": 10,
+      "checks": 24
+    },
+    "False": {
+      "percentage": 42,
+      "checks": 94
+    },
+    "Pants on Fire": {
+      "percentage": 17,
+      "checks": 39
+    }
+  },
+  "https://www.politifact.com/religion/": {
+    "True": {
+      "percentage": 4,
+      "checks": 14
+    },
+    "Mostly True": {
+      "percentage": 7,
+      "checks": 25
+    },
+    "Half True": {
+      "percentage": 11,
+      "checks": 35
+    },
+    "Mostly False": {
+      "percentage": 11,
+      "checks": 37
+    },
+    "False": {
+      "percentage": 37,
+      "checks": 119
+    },
+    "Pants on Fire": {
+      "percentage": 27,
+      "checks": 88
+    }
+  },
+  "https://www.politifact.com/lgbtq/": {
+    "True": {
+      "percentage": 7,
+      "checks": 20
+    },
+    "Mostly True": {
+      "percentage": 10,
+      "checks": 29
+    },
+    "Half True": {
+      "percentage": 13,
+      "checks": 36
+    },
+    "Mostly False": {
+      "percentage": 16,
+      "checks": 46
+    },
+    "False": {
+      "percentage": 40,
+      "checks": 111
+    },
+    "Pants on Fire": {
+      "percentage": 10,
+      "checks": 29
+    }
+  }
+}
