@@ -4,7 +4,7 @@
 
 This repository contains the dataset described in the paper: *FactCellar: Evidence based automated fact-checking*.
 
-**Authors:** Arbaaz Dharmavaram, Farrukh Bin Rashid, Saqib Hakak (University of New Brunswick)
+**Authors:** Arbaaz Dharmavaram, [Farrukh Bin Rashid](https://github.com/farrukhrashid1997), Saqib Hakak (University of New Brunswick)
 
 ---
 
