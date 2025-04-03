@@ -4,8 +4,11 @@ from time import sleep
 import trafilatura
 import sys
 import json
-import requests
 import pymupdf 
+import subprocess
+import tempfile
+import os
+import filetype
 
 from io import BytesIO
 from selenium import webdriver
@@ -15,6 +18,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from trafilatura.settings import DEFAULT_CONFIG
+from trafilatura.meta import reset_caches
 
 # Increase max file size to 50MB
 DEFAULT_CONFIG['DEFAULT']['MAX_FILE_SIZE'] = "50000000"
@@ -75,25 +79,47 @@ class WebpageProcessor:
         cookie_patterns = [
             # Buttons
             "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'accept')]",
+            "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'accept all')]",
             "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'agree')]",
+            "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'consent')]",
+            "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'allow')]",
+            "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'got it')]",
+            "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'ok')]",
+            
             # Links
             "//a[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'accept')]",
-            # Divs that might be clickable
+            "//a[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'agree')]",
+            "//a[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'consent')]",
+            
+            # Divs and spans that might be clickable
             "//div[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'accept')][@role='button']",
+            "//div[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'agree')][@role='button']",
+            "//span[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'accept')][@role='button']",
+            
             # IDs and classes
-            "//*[contains(@id, 'cookie') or contains(@class, 'cookie')]//button",
+            "//*[contains(@id, 'cookie') or contains(@class, 'cookie')]//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'accept')]",
+            "//*[contains(@id, 'cookie') or contains(@class, 'cookie')]//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'agree')]",
+            "//*[contains(@id, 'cookie') or contains(@class, 'cookie')]//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'allow')]",
+            "//*[contains(@id, 'gdpr') or contains(@class, 'gdpr')]//button",
+            "//*[contains(@id, 'consent') or contains(@class, 'consent')]//button",
+            
             # Common cookie banner IDs
             "//*[@id='cookiebanner']//button",
             "//*[@id='cookie-banner']//button",
+            "//*[@id='cookie-consent']//button",
+            "//*[@id='cookie-notice']//button",
+            "//*[@id='cookie-policy']//button",
+            
+            # Common non-English patterns (add more as needed)
+            "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'akzeptieren')]",  # German
+            "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'accepter')]",  # French
+            "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'aceptar')]",  # Spanish
         ]
 
         # Common button texts; extend this list as needed
-        button_texts = ['Accept', 'I Agree', 'Agree', 'Consent', 'Allow All']
-        # for pattern in button_texts:
         for pattern in cookie_patterns:
             try:
                 cookie_button = WebDriverWait(self.driver, timeout).until(
-                    # EC.element_to_be_clickable((By.XPATH, f"//button[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '{pattern.lower()}')]"))
                     EC.element_to_be_clickable((By.XPATH, pattern))
                 )
                 cookie_button.click()
@@ -125,7 +151,7 @@ class WebpageProcessor:
         except Exception as e:
             print(f"Scrolling error: {e}", file=sys.stderr)
 
-    def get_page_with_selenium(self, url, timeout=5):
+    def get_page_with_selenium(self, url, timeout=10):
         if not self.driver:
             self.initialize_driver()
             print("Initialized driver")
@@ -155,95 +181,67 @@ class WebpageProcessor:
 
     def get_page(self, url, method='auto'):
         page = None
-        
         if method in ['auto', 'trafilatura']:
-            try:
-                # page = trafilatura.fetch_url(url, config=DEFAULT_CONFIG)
-                page = trafilatura.fetch_response(url, config=DEFAULT_CONFIG)
-            except Exception as e:
-                print(f"Trafilatura failed for {url}: {str(e)}", file=sys.stderr)
+            for i in range(3):
+                try:
+                    page = trafilatura.fetch_url(url, config=DEFAULT_CONFIG)
+                    assert page is not None
+                    print("Fetched "+url, file=sys.stderr)
+                    break
+                except Exception as e:
+                    print(f"Trafilatura failed for {url}: {i+1}/3", file=sys.stderr)
+                    sleep(3)
         
         if page is None and method in ['auto', 'selenium']:
             page = self.get_page_with_selenium(url)
-        
         return page
-    
 
-    def html2lines(self, page):
-        if not page: # or len(page.strip()) == 0
-            print("No page found")
-            return {}
-
+    def html2lines(self, page):        
+        if page is None or len(page.strip()) == 0:
+            return []
         try:
-            text = trafilatura.extract(page, 
-                                # favor_recall=True, 
-                                with_metadata=True,    
-                                no_fallback=False,
-                                deduplicate=True,
-                                output_format="json"
-                                )
-            return json.loads(text)
+            text = trafilatura.extract(page, favor_recall=True, with_metadata=False)
+            reset_caches()
+            if text is None:
+                return []
+            return text.split("\n")
         except Exception as e:
             print(e)
-            return {}
-        
-    # def extract_doc_content(self, url):
-    #     """
-    #     Downloads a PDF from the given URL and extracts its content.
-    #     """
-    #     extension = url.split(".")[-1].lower()
-    #     try:
-    #         response = requests.get(url, timeout=60)
-    #         response.raise_for_status()  # Raise an exception for bad status codes
-
-    #         # with BytesIO(response.content) as pdf_file:
-    #         pdf_data = BytesIO(response.content)
-    #         reader = pymupdf.open(stream=pdf_data, filetype=extension)
-    #         text = ""
-    #         for page in reader:
-    #             text += page.get_text()
-    #         return {"text": text}
-    #     except Exception as e:
-    #         print(f"Error extracting PDF content from {url}: {e}", file=sys.stderr)
-    #         return {}
+            return []
 
     def extract_doc_content(self, url):
         """
         Downloads a PDF from the given URL and extracts its content using wget.
         """
-        import subprocess
-        import tempfile
-        import os
-        
-        extension = url.split(".")[-1].lower()            
         try:
             # Create a temporary file
-            with tempfile.NamedTemporaryFile(delete=False, suffix=f".{extension}") as tmp_file:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=f".sav") as tmp_file:
                 temp_path = tmp_file.name
             
             # Download using wget
-            subprocess.run(['wget', '-O', temp_path, url], check=True, timeout=60)
+            subprocess.run(['wget', '-O', temp_path, url], check=True, timeout=30)
+
+            kind = filetype.guess(temp_path)
+            ftype = kind.extension if kind.extension else "txt"
+            print(f"Using Extension {ftype}")
             
             # Extract text
-            reader = pymupdf.open(temp_path, filetype="txt")
+            reader = pymupdf.open(temp_path, filetype=ftype)
             text = ""
             for page in reader:
                 text += page.get_text()
             
-            return {"text": text}
-        except subprocess.TimeoutExpired:
-            print(f"Timeout while downloading {url}", file=sys.stderr)
-            return {}
+            return text.split("\n")
         except Exception as e:
             print(f"Error extracting PDF content from {url}: {e}", file=sys.stderr)
-            return {}
+            return []
         finally:
-            # Ensure the temporary file is always deleted
             if temp_path and os.path.exists(temp_path):
                 os.remove(temp_path)
 
     def url2lines(self, url, method='auto'):
-        if url.endswith(('.pdf', '.txt', '.docx')):
+        l_url = url.lower()
+        if l_url.endswith(('.pdf', '.txt', '.docx')):
             return self.extract_doc_content(url)
         page = self.get_page(url, method=method)
         return self.html2lines(page)

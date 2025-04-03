@@ -3,8 +3,8 @@ import json
 import os
 import multiprocessing
 import tldextract
+import signal
 from utils.webpage_crawler import WebpageProcessor
-from ftlangdetect import detect
 import argparse
 
 # Blacklists
@@ -35,6 +35,9 @@ BLACKLIST_DOMAINS = {
     "verifythis.com",
     "telegram.org",
     "factcheck.africa",
+    "washingtonpost.com",
+    "reuters.com",
+    "nytimes.com"
 }
 
 BLACKLIST_FILES = [
@@ -61,12 +64,19 @@ def should_filter_link(link):
         return True
     return False
 
-def crawl_claim_evidences(claim_id, claim_search_results):
+def crawl_claim_evidences(claim_id, claim_search_results, timeout=45):
     save_dir = "data/knowledge_store/"
     processor = WebpageProcessor()
     crawled_info = []
     print("Processing claim", claim_id)
-    q_cnt = 0
+    
+    class TimeoutException(Exception):
+        pass
+    
+    def timeout_handler(signum, frame):
+        print("Timeout!")
+        raise TimeoutException("Function timed out")
+    
     for query, page_results in claim_search_results.items():
         for page_num, results in page_results.items():
             for result in results:
@@ -74,64 +84,48 @@ def crawl_claim_evidences(claim_id, claim_search_results):
                     continue
                 try:
                     print(claim_id, "=>", result["link"])
-                    page_json = processor.url2lines(result["link"], method="trafilatura")
-                    if page_json is not None:
-                        crawled_text = page_json["text"]
-                        crawled_url = page_json["source"]
-                    else:
-                        crawled_text = ""
-                        crawled_url = ""
+                    # Set the timeout
+                    signal.signal(signal.SIGALRM, timeout_handler)
+                    signal.alarm(timeout)
+                    
+                    crawled_text = processor.url2lines(result["link"], method="auto")
 
+                    # Cancel the alarm if the function completes
+                    signal.alarm(0)
                 except Exception as e:
-                    crawled_text = ""
-                    crawled_url = ""
+                    print(e)
+                    crawled_text = []
 
                 crawled_info.append({
                     "claim_id": claim_id,
                     "query": query,
                     "page_num": page_num,
                     "url": result["link"],
-                    "crawled_url": crawled_url,
                     "text": crawled_text
                 })
-        q_cnt += 1
-        # print(claim_id, "=>", q_cnt)
 
     with open(os.path.join(save_dir, f"{claim_id}.json"), "w") as f:
         json.dump(crawled_info, f, indent=2)
     processor.cleanup()
 
-def process_claims(df, search_results, max_claims, max_processes):
+def process_claims(dataset, search_results, max_processes):
     save_dir = "data/knowledge_store/"
 
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
 
     processed_claims = [f for f in os.listdir(save_dir) if f.endswith(".json")]
-    processed_claims = [int(f.split(".")[0]) for f in processed_claims]
     print(len(processed_claims), " claims already processed")
 
     with multiprocessing.Pool(processes=max_processes) as pool:
         tasks = []
-        for row in df.iterrows():
-            claim_id = row[0]
-            if claim_id in processed_claims:
-                print(claim_id)
+        for ix, claim_object in enumerate(dataset):            
+            claim_id = claim_object['claim_id']
+            if f'{claim_id}.json' in processed_claims:
+                print(claim_id, " already processed")
                 continue
 
-            # if claim_id > max_claims:
-            #     break
-
-            if claim_id not in [170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180]:
-                continue
-
-            # Do not process non-English claims
-            claim_filtered = row[1].claim.replace("\n", " ")
-            if detect(text=claim_filtered, low_memory=False)["lang"] != "en":
-                print(f"Skipping claim {claim_id} because it is not in English")
-                continue
-
-            claim_search_results = search_results[row[1].claim]
+            claim_search_results = search_results[claim_object['claim']]
             tasks.append((claim_id, claim_search_results))
 
         if tasks:
@@ -139,16 +133,16 @@ def process_claims(df, search_results, max_claims, max_processes):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--max_claims', type=int, default=1,
-                       help='Maximum number of claims to process')
-    parser.add_argument('--max_processes', type=int, default=6,
+    parser.add_argument('--max_processes', type=int, default=16,
                        help='Maximum number of processes to use')
     args = parser.parse_args()
 
-    df = pd.read_csv("data/fnd_politifact_claims_final.csv", encoding='utf-8')
+    with open("data/dataset_politifact.json", "r") as f:
+        dataset = json.load(f)
+
     with open("data/search_results.json", "r") as f:
         search_results = json.load(f)
-    process_claims(df, search_results, args.max_claims, args.max_processes)
+    process_claims(dataset, search_results, args.max_processes)
 
 if __name__ == "__main__":
     main()

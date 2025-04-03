@@ -1,9 +1,7 @@
-data/knowledge_store/
-__pycache__/
-utils/__pycache__/
-source_cred/__pycache__/
 secrets/
-papers/
 .DS_Store
 .ipynb_checkpoints/
-notebooks/.ipynb_checkpoints/
+data/fnd_politifact_claims_final.csv
+data/search_results_politifact.json
+data/knowledge_store_politifact.zip
+data/knowledge_store_snopes.zip
